@@ -19,7 +19,10 @@ def get_current_user(
     user_id = payload.get("sub")
     if not user_id:
         raise HTTPException(status_code=401, detail="Invalid token claims")
-    user = db.query(User).filter(User.id == uuid.UUID(user_id)).first()
+    try:
+        user = db.query(User).filter(User.id == uuid.UUID(user_id)).first()
+    except ValueError:
+        raise HTTPException(status_code=401, detail="Invalid token claims")
     if not user:
         raise HTTPException(status_code=401, detail="User not found")
     return user
