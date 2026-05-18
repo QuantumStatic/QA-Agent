@@ -40,3 +40,18 @@ def test_register_and_login_endpoints(client):
 
     r = client.post("/api/auth/login", json={"email": "a@b.com", "password": "wrong"})
     assert r.status_code == 401
+
+
+def test_current_user_dependency(client):
+    r = client.post("/api/auth/register", json={"email": "x@y.com", "password": "pwpwpwpw"})
+    token = r.json()["token"]
+
+    r = client.get("/api/health/protected", headers={"Authorization": f"Bearer {token}"})
+    assert r.status_code == 200
+    assert r.json()["email"] == "x@y.com"
+
+    r = client.get("/api/health/protected")
+    assert r.status_code == 401
+
+    r = client.get("/api/health/protected", headers={"Authorization": "Bearer garbage"})
+    assert r.status_code == 401
