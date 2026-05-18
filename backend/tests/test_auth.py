@@ -38,7 +38,7 @@ def test_register_and_login_endpoints(client):
     assert r.status_code == 200
     assert "token" in r.json()
 
-    r = client.post("/api/auth/login", json={"email": "a@b.com", "password": "wrong"})
+    r = client.post("/api/auth/login", json={"email": "a@b.com", "password": "wrongpass"})
     assert r.status_code == 401
 
 

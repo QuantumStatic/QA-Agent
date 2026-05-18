@@ -56,6 +56,6 @@ def delete_document(db: Session, document_id: str, user_id: str):
     ).first()
     if not doc:
         raise HTTPException(status_code=404, detail="Document not found")
-    delete_document_from_chroma(document_id)
     db.delete(doc)
     db.commit()
+    delete_document_from_chroma(document_id)

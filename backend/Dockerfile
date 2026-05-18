@@ -24,4 +24,4 @@ COPY backend/alembic ./alembic
 COPY --from=frontend /frontend/dist /app/static
 
 EXPOSE 8080
-ENTRYPOINT ["sh", "-c", "exec uvicorn app.main:app --host 0.0.0.0 --port 8080"]
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8080"]
